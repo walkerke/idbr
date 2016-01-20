@@ -2,7 +2,9 @@
 
 load_data <- function(api_call) {
 
-  df <- data.frame(jsonlite::fromJSON(api_call), stringsAsFactors = FALSE)
+  request <- httr::GET(api_call)
+
+  df <- data.frame(jsonlite::fromJSON(httr::content(request, as = 'text')), stringsAsFactors = FALSE)
 
   colnames(df) <- df[1, ]
 
