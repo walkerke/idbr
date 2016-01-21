@@ -1,4 +1,4 @@
-Package: IDBr
+Package: idbr
 Type: Package
 Title: R Interface to the US Census Bureau International Data Base API
 Version: 0.1.0.9000
@@ -9,7 +9,9 @@ LazyData: TRUE
 Depends:
   R (>= 3.0.0)
 Suggests:
-  tidyr
+  tidyr,
+  plotly,
+  countrycode
 Imports:
   jsonlite,
   dplyr,
