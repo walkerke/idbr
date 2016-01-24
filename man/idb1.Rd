@@ -4,8 +4,8 @@
 \alias{idb1}
 \title{Retrieve data from the single-year-of-age IDB dataset}
 \usage{
-idb1(country, year, variables = "all", start_age = NULL, end_age = NULL,
-  sex = NULL, api_key = NULL)
+idb1(country, year, variables = c("AGE", "AREA_KM2", "NAME", "POP"),
+  start_age = NULL, end_age = NULL, sex = NULL, api_key = NULL)
 }
 \arguments{
 \item{country}{The two-character country FIPS code}

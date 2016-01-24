@@ -10,7 +10,8 @@
 #' @return A data frame with the requested data.
 #'
 #' @export
-idb1 <- function(country, year, variables = 'all', start_age = NULL, end_age = NULL, sex = NULL, api_key = NULL) {
+idb1 <- function(country, year, variables = c('AGE', 'AREA_KM2', 'NAME', 'POP'),
+                 start_age = NULL, end_age = NULL, sex = NULL, api_key = NULL) {
 
   if (Sys.getenv('IDB_API') != '') {
 
@@ -22,15 +23,18 @@ idb1 <- function(country, year, variables = 'all', start_age = NULL, end_age = N
 
   }
 
-  if (variables == 'all') {
+  if (any(is.na(!match(country, valid_countries))) == TRUE) {
 
-    variables <- 'AGE,AREA_KM2,NAME,POP'
+    nomatch <- country[is.na(!match(country, valid_countries))]
 
-  } else {
+    country <- country[!country %in% nomatch]
 
-    variables <- paste(variables, sep = '', collapse = ',')
+    warning(paste0('The FIPS codes ', paste(nomatch, sep = ' ', collapse = ', '),
+                   ' are not available in the Census IDB, and have been removed from your query.'))
 
   }
+
+  variables <- paste(variables, sep = '', collapse = ',')
 
   if (length(year) == 1) {
 
@@ -145,6 +149,17 @@ idb5 <- function(country, year, variables = NULL, concept = NULL, country_name =
   } else if (is.null(api_key)) {
 
     stop('A Census API key is required.  Obtain one at http://api.census.gov/data/key_signup.html, and then supply the key to the `idb_api_key` function to use it throughout your IDBr session.')
+
+  }
+
+  if (any(is.na(!match(country, valid_countries))) == TRUE) {
+
+    nomatch <- country[is.na(!match(country, valid_countries))]
+
+    country <- country[!country %in% nomatch]
+
+    warning(paste0('The FIPS codes ', paste(nomatch, sep = ' ', collapse = ', '),
+                   ' are not available in the Census IDB, and have been removed from your query.'))
 
   }
 
