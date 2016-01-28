@@ -19,9 +19,11 @@ idb1 <- function(country, year, variables = c('AGE', 'AREA_KM2', 'NAME', 'POP'),
 
   } else if (is.null(api_key)) {
 
-    stop('A Census API key is required.  Obtain one at http://api.census.gov/data/key_signup.html, and then supply the key to the `idb_api_key` function to use it throughout your IDBr session.')
+    stop('A Census API key is required.  Obtain one at http://api.census.gov/data/key_signup.html, and then supply the key to the `idb_api_key` function to use it throughout your idbr session.')
 
   }
+
+  suppressWarnings(if (country == 'all') country <- valid_countries)
 
   if (any(is.na(!match(country, valid_countries))) == TRUE) {
 
@@ -148,9 +150,11 @@ idb5 <- function(country, year, variables = NULL, concept = NULL, country_name =
 
   } else if (is.null(api_key)) {
 
-    stop('A Census API key is required.  Obtain one at http://api.census.gov/data/key_signup.html, and then supply the key to the `idb_api_key` function to use it throughout your IDBr session.')
+    stop('A Census API key is required.  Obtain one at http://api.census.gov/data/key_signup.html, and then supply the key to the `idb_api_key` function to use it throughout your idbr session.')
 
   }
+
+  suppressWarnings(if (country == 'all') country <- valid_countries)
 
   if (any(is.na(!match(country, valid_countries))) == TRUE) {
 
