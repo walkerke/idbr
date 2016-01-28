@@ -167,6 +167,12 @@ idb5 <- function(country, year, variables = NULL, concept = NULL, country_name =
 
   }
 
+  if (length(variables) > 50) {
+
+    stop("Requests are limited to 50 variables.  Consider using `idb_variables()` to identify which variables to select, or `idb_concepts()` to identify a concept by which you can subset.", call. = FALSE)
+
+  }
+
   if (!is.null(variables)) {
 
     if (!is.null(concept)) {
