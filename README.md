@@ -7,7 +7,7 @@ I'm still working out a few things with the package before sending to CRAN; howe
 
 ```r
 library(devtools)
-install_github('walkerke/idbr')`
+install_github('walkerke/idbr')
 ```
 
 For some examples of how to use the package, I encourage you to check out a couple blog posts: 
