@@ -4,19 +4,29 @@ load_data <- function(api_call) {
 
   request <- httr::GET(api_call)
 
-  df <- data.frame(jsonlite::fromJSON(httr::content(request, as = 'text')), stringsAsFactors = FALSE)
+  cont <- httr::content(request, as = 'text')
 
-  colnames(df) <- df[1, ]
+  if (jsonlite::validate(cont) == FALSE) {
 
-  df <- df[-1, ]
+    stop("You have supplied an invalid query.  Consider revising your year selection (IDB data begin at 1950, and are not available for many countries until 1990), or use `idb_variables()` or `idb_concepts()` to view valid choices of variables and concepts.", call. = FALSE)
 
-  rownames(df) <- NULL
+  } else {
 
-  string_cols <- names(df) %in% c("NAME", "FIPS")
+    df <- data.frame(jsonlite::fromJSON(cont), stringsAsFactors = FALSE)
 
-  df[!string_cols] <- apply(df[!string_cols], 2, function(x) as.numeric(x))
+    colnames(df) <- df[1, ]
 
-  return(df)
+    df <- df[-1, ]
+
+    rownames(df) <- NULL
+
+    string_cols <- names(df) %in% c("NAME", "FIPS")
+
+    df[!string_cols] <- apply(df[!string_cols], 2, function(x) as.numeric(x))
+
+    return(dplyr::tbl_df(df))
+
+  }
 
 }
 
