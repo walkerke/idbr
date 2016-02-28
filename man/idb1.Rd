@@ -19,11 +19,42 @@ idb1(country, year, variables = c("AGE", "AREA_KM2", "NAME", "POP"),
 \item{end_age}{(optional) The second age group for which you'd like to retrieve data.}
 
 \item{sex}{(optional) One of 'both', 'male', or 'female'.}
+
+\item{api_key}{The user's Census API key.  Can be supplied here or set globally in an idbr session with
+\code{idb_api_key(api_key)}.}
 }
 \value{
 A data frame with the requested data.
 }
 \description{
 Retrieve data from the single-year-of-age IDB dataset
+}
+\examples{
+\dontrun{
+
+# Projected population pyramid of China in 2050 with idbr and plotly
+
+library(idbr)
+library(plotly)
+library(dplyr)#'
+
+idb_api_key('Your API key goes here')
+
+male <- idb1('CH', 2050, sex = 'male') \%>\%
+  mutate(POP = POP * -1,
+         SEX = 'Male')
+
+female <- idb1('CH', 2050, sex = 'female') \%>\%
+   mutate(SEX = 'Female')
+china <- rbind(male, female) \%>\%
+   mutate(abs_pop = abs(POP))
+plot_ly(china, x = POP, y = AGE, color = SEX, type = 'bar', orientation = 'h',
+        hoverinfo = 'y+text+name', text = abs_pop, colors = c('red', 'gold')) \%>\%
+  layout(bargap = 0.1, barmode = 'overlay',
+         xaxis = list(tickmode = 'array', tickvals = c(-10000000, -5000000, 0, 5000000, 10000000),
+                     ticktext = c('10M', '5M', '0', '5M', '10M')),
+         title = 'Projected population structure of China, 2050')
+
+}
 }
 

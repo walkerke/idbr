@@ -6,9 +6,39 @@
 #' @param start_age (optional) The first age for which you'd like to retrieve data.
 #' @param end_age (optional) The second age group for which you'd like to retrieve data.
 #' @param sex (optional) One of 'both', 'male', or 'female'.
+#' @param api_key The user's Census API key.  Can be supplied here or set globally in an idbr session with
+#' \code{idb_api_key(api_key)}.
 #'
 #' @return A data frame with the requested data.
 #'
+#' @examples \dontrun{
+#'
+#' # Projected population pyramid of China in 2050 with idbr and plotly
+#'
+#' library(idbr)
+#' library(plotly)
+#' library(dplyr)#'
+#'
+#' idb_api_key('Your API key goes here')
+#'
+#' male <- idb1('CH', 2050, sex = 'male') %>%
+#'   mutate(POP = POP * -1,
+#'          SEX = 'Male')
+#'
+#' female <- idb1('CH', 2050, sex = 'female') %>%
+#'    mutate(SEX = 'Female')
+#
+#' china <- rbind(male, female) %>%
+#'    mutate(abs_pop = abs(POP))
+#
+#' plot_ly(china, x = POP, y = AGE, color = SEX, type = 'bar', orientation = 'h',
+#'         hoverinfo = 'y+text+name', text = abs_pop, colors = c('red', 'gold')) %>%
+#'   layout(bargap = 0.1, barmode = 'overlay',
+#'          xaxis = list(tickmode = 'array', tickvals = c(-10000000, -5000000, 0, 5000000, 10000000),
+#'                      ticktext = c('10M', '5M', '0', '5M', '10M')),
+#'          title = 'Projected population structure of China, 2050')
+#'
+#' }
 #' @export
 idb1 <- function(country, year, variables = c('AGE', 'AREA_KM2', 'NAME', 'POP'),
                  start_age = NULL, end_age = NULL, sex = NULL, api_key = NULL) {
@@ -139,8 +169,30 @@ idb1 <- function(country, year, variables = c('AGE', 'AREA_KM2', 'NAME', 'POP'),
 #' @param variables A vector of variables.  Use `idb_variables()` for a full list.
 #' @param concept A concept for which you'd like to retrieve data.  Use `idb_concepts()` for a list of options.
 #' @param country_name If TRUE, returns a column with the long country name along with the FIPS code.
+#' @param api_key The user's Census API key.  Can be supplied here or set globally in an idbr session with
+#' \code{idb_api_key(api_key)}.
 #'
 #' @return A data frame with the requested data.
+#'
+#' @examples \dontrun{
+#'
+#' # World map of infant mortality rates by country for 2016 with plotly
+#'
+#' library(idbr)
+#' library(plotly)
+#' library(viridis)
+#'
+#' idb_api_key('Your API key goes here')
+#'
+#' df <- idb5(country = 'all', year = 2016, variable = 'IMR', country_name = TRUE)
+#'
+#' plot_ly(df, z = IMR, text = NAME, locations = NAME, locationmode = 'country names',
+#'         type = 'choropleth', colors = viridis(99), hoverinfo = 'text+z') %>%
+#'   layout(title = 'Infant mortality rate (per 1000 live births), 2016',
+#'          geo = list(projection = list(type = 'robinson')))
+#'
+#'
+#' }
 #' @export
 idb5 <- function(country, year, variables = NULL, concept = NULL, country_name = FALSE, api_key = NULL) {
 
@@ -292,6 +344,16 @@ idb5 <- function(country, year, variables = NULL, concept = NULL, country_name =
 
 #' Set the Census API key
 #'
+#' Use to set the Census API key in an idbr session so that the key does not have to be passed to each
+#' \code{idb1} or \code{idb5} function call.
+#'
+#' @param api_key The idbr user's Census API key.  Can be obtained from \url{http://api.census.gov/data/key_signup.html}.
+#'
+#' @examples \dontrun{
+#'
+#' idb_api_key('Your API key goes here')
+#'
+#' }
 #' @export
 idb_api_key <- function(api_key) {
 

@@ -1,7 +1,3 @@
-.onLoad <- function(libname, pkgname) {
-  data("variables5", package=pkgname, envir=parent.env(environment()))
-}
-
 # For checking to see if any invalid countries have been used
 
 valid_countries <- c("AA", "AC", "AE", "AF", "AG", "AJ", "AL", "AM", "AN", "AO",

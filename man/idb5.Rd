@@ -17,11 +17,35 @@ idb5(country, year, variables = NULL, concept = NULL,
 \item{concept}{A concept for which you'd like to retrieve data.  Use `idb_concepts()` for a list of options.}
 
 \item{country_name}{If TRUE, returns a column with the long country name along with the FIPS code.}
+
+\item{api_key}{The user's Census API key.  Can be supplied here or set globally in an idbr session with
+\code{idb_api_key(api_key)}.}
 }
 \value{
 A data frame with the requested data.
 }
 \description{
 Retrieve data from the five-year-age-group IDB dataset
+}
+\examples{
+\dontrun{
+
+# World map of infant mortality rates by country for 2016 with plotly
+
+library(idbr)
+library(plotly)
+library(viridis)
+
+idb_api_key('Your API key goes here')
+
+df <- idb5(country = 'all', year = 2016, variable = 'IMR', country_name = TRUE)
+
+plot_ly(df, z = IMR, text = NAME, locations = NAME, locationmode = 'country names',
+        type = 'choropleth', colors = viridis(99), hoverinfo = 'text+z') \%>\%
+  layout(title = 'Infant mortality rate (per 1000 live births), 2016',
+         geo = list(projection = list(type = 'robinson')))
+
+
+}
 }
 

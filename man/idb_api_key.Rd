@@ -6,7 +6,18 @@
 \usage{
 idb_api_key(api_key)
 }
+\arguments{
+\item{api_key}{The idbr user's Census API key.  Can be obtained from \url{http://api.census.gov/data/key_signup.html}.}
+}
 \description{
-Set the Census API key
+Use to set the Census API key in an idbr session so that the key does not have to be passed to each
+\code{idb1} or \code{idb5} function call.
+}
+\examples{
+\dontrun{
+
+idb_api_key('Your API key goes here')
+
+}
 }
 
