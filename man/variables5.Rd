@@ -23,5 +23,4 @@ To access the data directly, issue the command \code{data(variables5)}.
 \details{
 Dataset with variable and concept descriptions for the IDB
 }
-\keyword{datasets}
 

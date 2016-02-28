@@ -16,4 +16,4 @@
 #' @name variables5
 #' @usage data(variables5)
 #' @format A data frame with 98 rows and 5 columns
-"variables5"
+utils::globalVariables("variables5")
