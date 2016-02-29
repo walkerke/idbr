@@ -53,16 +53,15 @@ idb1 <- function(country, year, variables = c('AGE', 'AREA_KM2', 'NAME', 'POP'),
 
   }
 
-  suppressWarnings(if (country == 'all') country <- valid_countries)
+  if (length(country) > 1) {
 
-  if (any(is.na(!match(country, valid_countries))) == TRUE) {
+    stop('The option to supply multiple countries to a single `idb1` call is not yet supported.')
 
-    nomatch <- country[is.na(!match(country, valid_countries))]
+  }
 
-    country <- country[!country %in% nomatch]
+  if (!(country %in% valid_countries)) {
 
-    warning(paste0('The FIPS codes ', paste(nomatch, sep = ' ', collapse = ', '),
-                   ' are not available in the Census IDB, and have been removed from your query.'))
+    stop(paste0('The FIPS code ', country, ' is not available in the Census IDB.'))
 
   }
 
