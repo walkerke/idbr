@@ -2,7 +2,7 @@
 % Please edit documentation in R/idb.R
 \name{idb5}
 \alias{idb5}
-\title{Retrieve data from the five-year-age-group IDB dataset}
+\title{Retrieve data from the five-year-age-group IDB dataset.}
 \usage{
 idb5(country, year, variables = NULL, concept = NULL,
   country_name = FALSE, api_key = NULL)
@@ -12,9 +12,9 @@ idb5(country, year, variables = NULL, concept = NULL,
 
 \item{year}{A year, or a vector of years, for which you'd like to retrieve data.}
 
-\item{variables}{A vector of variables.  Use `idb_variables()` for a full list.}
+\item{variables}{A vector of variables.  Use \code{idb_variables()} for a full list.}
 
-\item{concept}{A concept for which you'd like to retrieve data.  Use `idb_concepts()` for a list of options.}
+\item{concept}{A concept for which you'd like to retrieve data.  Use \code{idb_concepts()} for a list of options.}
 
 \item{country_name}{If TRUE, returns a column with the long country name along with the FIPS code.}
 
@@ -25,7 +25,7 @@ idb5(country, year, variables = NULL, concept = NULL,
 A data frame with the requested data.
 }
 \description{
-Retrieve data from the five-year-age-group IDB dataset
+Retrieve data from the five-year-age-group IDB dataset.
 }
 \examples{
 \dontrun{
@@ -47,5 +47,8 @@ plot_ly(df, z = IMR, text = NAME, locations = NAME, locationmode = 'country name
 
 
 }
+}
+\seealso{
+\url{http://api.census.gov/data/timeseries/idb/5year.html}
 }
 

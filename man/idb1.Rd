@@ -2,7 +2,7 @@
 % Please edit documentation in R/idb.R
 \name{idb1}
 \alias{idb1}
-\title{Retrieve data from the single-year-of-age IDB dataset}
+\title{Retrieve data from the single-year-of-age IDB dataset.}
 \usage{
 idb1(country, year, variables = c("AGE", "AREA_KM2", "NAME", "POP"),
   start_age = NULL, end_age = NULL, sex = NULL, api_key = NULL)
@@ -27,7 +27,7 @@ idb1(country, year, variables = c("AGE", "AREA_KM2", "NAME", "POP"),
 A data frame with the requested data.
 }
 \description{
-Retrieve data from the single-year-of-age IDB dataset
+Retrieve data from the single-year-of-age IDB dataset.
 }
 \examples{
 \dontrun{
@@ -56,5 +56,8 @@ plot_ly(china, x = POP, y = AGE, color = SEX, type = 'bar', orientation = 'h',
          title = 'Projected population structure of China, 2050')
 
 }
+}
+\seealso{
+\url{http://api.census.gov/data/timeseries/idb/1year.html}
 }
 

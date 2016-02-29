@@ -1,4 +1,4 @@
-#' Retrieve data from the single-year-of-age IDB dataset
+#' Retrieve data from the single-year-of-age IDB dataset.
 #'
 #' @param country The two-character country FIPS code
 #' @param year The year for which you'd like to retrieve data
@@ -10,7 +10,7 @@
 #' \code{idb_api_key(api_key)}.
 #'
 #' @return A data frame with the requested data.
-#'
+#' @seealso \url{http://api.census.gov/data/timeseries/idb/1year.html}
 #' @examples \dontrun{
 #'
 #' # Projected population pyramid of China in 2050 with idbr and plotly
@@ -162,18 +162,18 @@ idb1 <- function(country, year, variables = c('AGE', 'AREA_KM2', 'NAME', 'POP'),
 
 
 
-#' Retrieve data from the five-year-age-group IDB dataset
+#' Retrieve data from the five-year-age-group IDB dataset.
 #'
 #' @param country A two-character FIPS code, or a vector of FIPS codes, of the countries for which you'd like to retrieve data.
 #' @param year A year, or a vector of years, for which you'd like to retrieve data.
-#' @param variables A vector of variables.  Use `idb_variables()` for a full list.
-#' @param concept A concept for which you'd like to retrieve data.  Use `idb_concepts()` for a list of options.
+#' @param variables A vector of variables.  Use \code{idb_variables()} for a full list.
+#' @param concept A concept for which you'd like to retrieve data.  Use \code{idb_concepts()} for a list of options.
 #' @param country_name If TRUE, returns a column with the long country name along with the FIPS code.
 #' @param api_key The user's Census API key.  Can be supplied here or set globally in an idbr session with
 #' \code{idb_api_key(api_key)}.
 #'
 #' @return A data frame with the requested data.
-#'
+#' @seealso \url{http://api.census.gov/data/timeseries/idb/5year.html}
 #' @examples \dontrun{
 #'
 #' # World map of infant mortality rates by country for 2016 with plotly
