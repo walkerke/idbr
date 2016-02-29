@@ -55,11 +55,12 @@ china <- rbind(male, female)
 ggplot(china, aes(x = AGE, y = POP, fill = SEX, width = 1)) +
   coord_flip() +
   annotate('text', x = 98, y = 8000000, 
-  label = 'Data source: US Census Bureau IDB via the idbr R package', size = 3.5) + 
+          label = 'Data source: US Census Bureau IDB via the idbr R package', 
+          size = 3.5) + 
   geom_bar(data = subset(china, SEX == "Female"), stat = "identity") +
   geom_bar(data = subset(china, SEX == "Male"), stat = "identity") +
   scale_y_continuous(breaks = seq(-10000000, 10000000, 5000000),
-  labels = paste0(as.character(c(seq(10, 0, -5), c(5, 10))), "m")) +
+                    labels = paste0(as.character(c(seq(10, 0, -5), c(5, 10))), "m")) +
   theme_economist(base_size = 14) + 
   scale_fill_economist() + 
   ggtitle('Population structure of China, 2016') + 
