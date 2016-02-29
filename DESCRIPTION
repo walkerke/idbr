@@ -1,11 +1,11 @@
 Package: idbr
 Type: Package
 Title: R Interface to the US Census Bureau International Data Base API
-Version: 0.1.2
+Version: 0.1.2.9000
 Authors@R: c(person(given="Kyle", family="Walker", email="kyle.walker@tcu.edu", role=c("aut", "cre")))
 Description: Use R to make requests to the US Census Bureau's International Data Base API.
              Results are returned as R data frames.  For more information about the IDB API, visit
-             http://www.census.gov/data/developers/data-sets/international-database.html.
+             <http://www.census.gov/data/developers/data-sets/international-database.html>.
 License: MIT + file LICENSE
 LazyData: TRUE
 Depends:

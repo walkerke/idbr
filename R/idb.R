@@ -17,7 +17,7 @@
 #'
 #' library(idbr)
 #' library(plotly)
-#' library(dplyr)#'
+#' library(dplyr)
 #'
 #' idb_api_key('Your API key goes here')
 #'
