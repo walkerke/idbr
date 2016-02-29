@@ -5,7 +5,7 @@ An R interface to the US Census Bureau International Data Base API
 
 This R package enables users to fetch international demographic indicators from the US Census Bureau's International Data Base API and return R data frames.  
 
-Install from CRAN with: 
+The package is currently under CRAN review.  Once published, install from CRAN with: 
 
 ```r
 install.packages('idbr')
