@@ -1,6 +1,8 @@
 # idbr
 An R interface to the US Census Bureau International Data Base API
 
+[![Travis-CI Build Status](https://travis-ci.org/walkerke/idbr.svg?branch=master)](https://travis-ci.org/walkerke/idbr)  ![](http://www.r-pkg.org/badges/version/idbr)  ![](http://cranlogs.r-pkg.org/badges/grand-total/idbr)
+
 This R package enables users to fetch international demographic indicators from the US Census Bureau's International Data Base API and return R data frames.  
 
 I'm still working out a few things with the package before sending to CRAN; however if you'd like to try it out install with: 
