@@ -72,7 +72,7 @@ ggplot(china, aes(x = AGE, y = POP, fill = SEX, width = 1)) +
 
 ```
 
-<img src="http://personal.tcu.edu/kylewalker/img/china.png" style = "width: 800px">
+<img src="http://personal.tcu.edu/kylewalker/img/china2.png" style = "width: 800px">
 
 The `idb5()` function grants access to the five-year-age-band dataset, which includes a wide range of fertility, mortality, and migration indicators along with overall population counts.  In turn, it can be used to inform analyses of how demographic indicators vary by country over time, among many other use cases.  
 
