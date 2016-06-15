@@ -14,4 +14,5 @@
 #' @import httr
 #' @import jsonlite
 #' @import dplyr
+#' @import countrycode
 NULL

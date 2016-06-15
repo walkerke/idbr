@@ -8,7 +8,7 @@ idb1(country, year, variables = c("AGE", "AREA_KM2", "NAME", "POP"),
   start_age = NULL, end_age = NULL, sex = NULL, api_key = NULL)
 }
 \arguments{
-\item{country}{The two-character country FIPS code}
+\item{country}{The two-character country FIPS code, or a valid country name.}
 
 \item{year}{The year for which you'd like to retrieve data}
 
@@ -36,7 +36,7 @@ Retrieve data from the single-year-of-age IDB dataset.
 
 library(idbr)
 library(plotly)
-library(dplyr)#'
+library(dplyr)
 
 idb_api_key('Your API key goes here')
 

@@ -8,13 +8,15 @@ idb5(country, year, variables = NULL, concept = NULL,
   country_name = FALSE, api_key = NULL)
 }
 \arguments{
-\item{country}{A two-character FIPS code, or a vector of FIPS codes, of the countries for which you'd like to retrieve data.}
+\item{country}{A two-character FIPS code or country name, or a vector of FIPS codes or country names,
+of the countries for which you'd like to retrieve data.}
 
 \item{year}{A year, or a vector of years, for which you'd like to retrieve data.}
 
 \item{variables}{A vector of variables.  Use \code{idb_variables()} for a full list.}
 
-\item{concept}{A concept for which you'd like to retrieve data.  Use \code{idb_concepts()} for a list of options.}
+\item{concept}{A concept for which you'd like to retrieve data.
+Use \code{idb_concepts()} for a list of options.}
 
 \item{country_name}{If TRUE, returns a column with the long country name along with the FIPS code.}
 

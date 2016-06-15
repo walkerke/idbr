@@ -1,6 +1,6 @@
 #' Retrieve data from the single-year-of-age IDB dataset.
 #'
-#' @param country The two-character country FIPS code
+#' @param country The two-character country FIPS code, or a valid country name.
 #' @param year The year for which you'd like to retrieve data
 #' @param variables A vector of variables.  If left blank, will return age, area in square kilometers, the name of the country, and the population size of the age group.
 #' @param start_age (optional) The first age for which you'd like to retrieve data.
@@ -56,6 +56,12 @@ idb1 <- function(country, year, variables = c('AGE', 'AREA_KM2', 'NAME', 'POP'),
   if (length(country) > 1) {
 
     stop('The option to supply multiple countries to a single `idb1` call is not yet supported.')
+
+  }
+
+  if (nchar(country) > 2) {
+
+    country <- countrycode::countrycode(country, 'country.name', 'fips104')
 
   }
 
@@ -163,10 +169,12 @@ idb1 <- function(country, year, variables = c('AGE', 'AREA_KM2', 'NAME', 'POP'),
 
 #' Retrieve data from the five-year-age-group IDB dataset.
 #'
-#' @param country A two-character FIPS code, or a vector of FIPS codes, of the countries for which you'd like to retrieve data.
+#' @param country A two-character FIPS code or country name, or a vector of FIPS codes or country names,
+#' of the countries for which you'd like to retrieve data.
 #' @param year A year, or a vector of years, for which you'd like to retrieve data.
 #' @param variables A vector of variables.  Use \code{idb_variables()} for a full list.
-#' @param concept A concept for which you'd like to retrieve data.  Use \code{idb_concepts()} for a list of options.
+#' @param concept A concept for which you'd like to retrieve data.
+#' Use \code{idb_concepts()} for a list of options.
 #' @param country_name If TRUE, returns a column with the long country name along with the FIPS code.
 #' @param api_key The user's Census API key.  Can be supplied here or set globally in an idbr session with
 #' \code{idb_api_key(api_key)}.
@@ -205,7 +213,27 @@ idb5 <- function(country, year, variables = NULL, concept = NULL, country_name =
 
   }
 
-  suppressWarnings(if (country == 'all') country <- valid_countries)
+  suppressWarnings(if (country == 'all') {
+
+    country <- valid_countries
+
+    } else {
+
+      country <- vapply(country, function(x) {
+
+        if (nchar(x) > 2) {
+
+          return(countrycode::countrycode(x, 'country.name', 'fips104'))
+
+        } else {
+
+          return(x)
+
+        }
+
+      }, character(1))
+
+    })
 
   if (any(is.na(!match(country, valid_countries))) == TRUE) {
 
