@@ -165,8 +165,6 @@ idb1 <- function(country, year, variables = c('AGE', 'AREA_KM2', 'NAME', 'POP'),
 
 }
 
-
-
 #' Retrieve data from the five-year-age-group IDB dataset.
 #'
 #' @param country A two-character FIPS code or country name, or a vector of FIPS codes or country names,
