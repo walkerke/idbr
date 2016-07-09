@@ -41,11 +41,11 @@ library(ggplot2)
 library(ggthemes)
 
 # Supply the FIPS country code and year for which you'd like to request data, optionally by sex
-male <- idb1('CH', 2016, sex = 'male') %>%
+male <- idb1('China', 2016, sex = 'male') %>%
   mutate(POP = POP * -1,
          SEX = 'Male')
 
-female <- idb1('CH', 2016, sex = 'female') %>%
+female <- idb1('China', 2016, sex = 'female') %>%
   mutate(SEX = 'Female')
 
 china <- rbind(male, female) 
@@ -77,12 +77,9 @@ ggplot(china, aes(x = AGE, y = POP, fill = SEX, width = 1)) +
 The `idb5()` function grants access to the five-year-age-band dataset, which includes a wide range of fertility, mortality, and migration indicators along with overall population counts.  In turn, it can be used to inform analyses of how demographic indicators vary by country over time, among many other use cases.  
 
 ```r
-library(countrycode)
-
-ssrs <- countrycode(c('Russia', 'Ukraine', 'Belarus'), 'country.name', 'fips104')
-
 # Fetch data for 'E0', which represents life expectancy at birth
-ssr_df <- idb5(ssrs, 1989:2015, variables = 'E0', country_name = TRUE)
+ssr_df <- idb5(c('Russia', 'Ukraine', 'Belarus'), 1989:2015, 
+              variables = 'E0', country_name = TRUE)
 
 ggplot(ssr_df, aes(x = time, y = E0, color = NAME)) + 
   geom_line(size = 1) + 
