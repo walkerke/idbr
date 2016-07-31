@@ -1,7 +1,7 @@
 # idbr
 An R interface to the US Census Bureau International Data Base API
 
-[![Travis-CI Build Status](https://travis-ci.org/walkerke/idbr.svg?branch=master)](https://travis-ci.org/walkerke/idbr)  ![](http://www.r-pkg.org/badges/version/idbr)  ![](http://cranlogs.r-pkg.org/badges/grand-total/idbr)
+[![Travis-CI Build Status](https://travis-ci.org/walkerke/idbr.svg?branch=master)](https://travis-ci.org/walkerke/idbr)  ![](http://www.r-pkg.org/badges/version/idbr)  ![](http://cranlogs.r-pkg.org/badges/idbr)
 
 This R package enables users to fetch international demographic indicators from the US Census Bureau's International Data Base API and return R data frames.  Total population data are available from 1950-2050 (projected); age-group subsets and other demographic indicators are available for varying periods by country.  
 
