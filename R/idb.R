@@ -10,7 +10,7 @@
 #' \code{idb_api_key(api_key)}.
 #'
 #' @return A data frame with the requested data.
-#' @seealso \url{http://api.census.gov/data/timeseries/idb/1year.html}
+#' @seealso \url{https://api.census.gov/data/timeseries/idb/1year.html}
 #' @examples \dontrun{
 #'
 #' # Projected population pyramid of China in 2050 with idbr and plotly
@@ -49,7 +49,7 @@ idb1 <- function(country, year, variables = c('AGE', 'AREA_KM2', 'NAME', 'POP'),
 
   } else if (is.null(api_key)) {
 
-    stop('A Census API key is required.  Obtain one at http://api.census.gov/data/key_signup.html, and then supply the key to the `idb_api_key` function to use it throughout your idbr session.')
+    stop('A Census API key is required.  Obtain one at https://api.census.gov/data/key_signup.html, and then supply the key to the `idb_api_key` function to use it throughout your idbr session.')
 
   }
 
@@ -61,7 +61,7 @@ idb1 <- function(country, year, variables = c('AGE', 'AREA_KM2', 'NAME', 'POP'),
 
   if (nchar(country) > 2) {
 
-    country <- countrycode::countrycode(country, 'country.name', 'fips104')
+    country <- countrycode::countrycode(country, 'country.name', 'fips')
 
   }
 
@@ -76,7 +76,7 @@ idb1 <- function(country, year, variables = c('AGE', 'AREA_KM2', 'NAME', 'POP'),
   if (length(year) == 1) {
 
     url <- paste0(
-      'http://api.census.gov/data/timeseries/idb/1year?get=',
+      'https://api.census.gov/data/timeseries/idb/1year?get=',
       variables,
       '&FIPS=',
       country,
@@ -119,7 +119,7 @@ idb1 <- function(country, year, variables = c('AGE', 'AREA_KM2', 'NAME', 'POP'),
     dfs <- lapply(year, function(x) {
 
       url <- paste0(
-        'http://api.census.gov/data/timeseries/idb/1year?get=',
+        'https://api.census.gov/data/timeseries/idb/1year?get=',
         variables,
         '&FIPS=',
         country,
@@ -178,7 +178,7 @@ idb1 <- function(country, year, variables = c('AGE', 'AREA_KM2', 'NAME', 'POP'),
 #' \code{idb_api_key(api_key)}.
 #'
 #' @return A data frame with the requested data.
-#' @seealso \url{http://api.census.gov/data/timeseries/idb/5year.html}
+#' @seealso \url{https://api.census.gov/data/timeseries/idb/5year.html}
 #' @examples \dontrun{
 #'
 #' # World map of infant mortality rates by country for 2016 with plotly
@@ -207,7 +207,7 @@ idb5 <- function(country, year, variables = NULL, concept = NULL, country_name =
 
   } else if (is.null(api_key)) {
 
-    stop('A Census API key is required.  Obtain one at http://api.census.gov/data/key_signup.html, and then supply the key to the `idb_api_key` function to use it throughout your idbr session.')
+    stop('A Census API key is required.  Obtain one at https://api.census.gov/data/key_signup.html, and then supply the key to the `idb_api_key` function to use it throughout your idbr session.')
 
   }
 
@@ -221,7 +221,7 @@ idb5 <- function(country, year, variables = NULL, concept = NULL, country_name =
 
         if (nchar(x) > 2) {
 
-          return(countrycode::countrycode(x, 'country.name', 'fips104'))
+          return(countrycode::countrycode(x, 'country.name', 'fips'))
 
         } else {
 
@@ -282,7 +282,7 @@ idb5 <- function(country, year, variables = NULL, concept = NULL, country_name =
   if (length(country) == 1 & length(year) == 1) {
 
     url <- paste0(
-      'http://api.census.gov/data/timeseries/idb/5year?get=',
+      'https://api.census.gov/data/timeseries/idb/5year?get=',
       variables,
       '&FIPS=',
       country,
@@ -299,7 +299,7 @@ idb5 <- function(country, year, variables = NULL, concept = NULL, country_name =
     dfs <- lapply(country, function(x) {
 
       url <- paste0(
-        'http://api.census.gov/data/timeseries/idb/5year?get=',
+        'https://api.census.gov/data/timeseries/idb/5year?get=',
         variables,
         '&FIPS=',
         x,
@@ -320,7 +320,7 @@ idb5 <- function(country, year, variables = NULL, concept = NULL, country_name =
     dfs <- lapply(year, function(x) {
 
       url <- paste0(
-        'http://api.census.gov/data/timeseries/idb/5year?get=',
+        'https://api.census.gov/data/timeseries/idb/5year?get=',
         variables,
         '&FIPS=',
         country,
@@ -343,7 +343,7 @@ idb5 <- function(country, year, variables = NULL, concept = NULL, country_name =
       dfs <- lapply(year, function(y) {
 
         url <- paste0(
-          'http://api.census.gov/data/timeseries/idb/5year?get=',
+          'https://api.census.gov/data/timeseries/idb/5year?get=',
           variables,
           '&FIPS=',
           x,
@@ -372,7 +372,7 @@ idb5 <- function(country, year, variables = NULL, concept = NULL, country_name =
 #' Use to set the Census API key in an idbr session so that the key does not have to be passed to each
 #' \code{idb1} or \code{idb5} function call.
 #'
-#' @param api_key The idbr user's Census API key.  Can be obtained from \url{http://api.census.gov/data/key_signup.html}.
+#' @param api_key The idbr user's Census API key.  Can be obtained from \url{https://api.census.gov/data/key_signup.html}.
 #'
 #' @examples \dontrun{
 #'
