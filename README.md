@@ -18,11 +18,6 @@ library(devtools)
 install_github('walkerke/idbr')
 ```
 
-Information about how to use the package is found below; more examples of how to use the package, such as animated GIF and interactive Plotly visualizations, are also found at the following blog posts: 
-
-* [Visualizing international demographic indicators with idbr and Plotly](http://walkerke.github.io/2016/01/idbr/)
-* [Japans ageing population, animated with R](http://blog.revolutionanalytics.com/2016/02/japans-ageing-population-animated-with-r.html)
-
 ## Basic usage: 
 
 To get started, load __idbr__ and set your Census API key with the `idb_api_key()` function.  An API key can be obtained from the US Census Bureau at <http://api.census.gov/data/key_signup.html>.
