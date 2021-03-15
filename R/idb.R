@@ -51,7 +51,7 @@ idb1 <- function(country, year, variables = c('AGE', 'AREA_KM2', 'NAME', 'POP'),
 
     # Check if tidycensus API key is available
 
-    if (Sys.getenv("CENSUS_API_KEY" != '')) {
+    if (Sys.getenv("CENSUS_API_KEY") != '') {
       api_key <- Sys.getenv("CENSUS_API_KEY")
     } else {
       stop('A Census API key is required.  Obtain one at https://api.census.gov/data/key_signup.html, and then supply the key to the `idb_api_key` function to use it throughout your idbr session.')
@@ -221,7 +221,7 @@ idb5 <- function(country, year, variables = NULL, concept = NULL, country_name =
 
     # Check if tidycensus API key is available
 
-    if (Sys.getenv("CENSUS_API_KEY" != '')) {
+    if (Sys.getenv("CENSUS_API_KEY") != '') {
       api_key <- Sys.getenv("CENSUS_API_KEY")
     } else {
       stop('A Census API key is required.  Obtain one at https://api.census.gov/data/key_signup.html, and then supply the key to the `idb_api_key` function to use it throughout your idbr session.')
