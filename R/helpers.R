@@ -24,7 +24,7 @@ load_data <- function(api_call) {
 
     df[!string_cols] <- apply(df[!string_cols], 2, function(x) as.numeric(x))
 
-    return(dplyr::tbl_df(df))
+    return(dplyr::as_tibble(df))
 
   }
 
