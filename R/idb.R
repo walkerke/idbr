@@ -49,13 +49,25 @@ idb1 <- function(country, year, variables = c('AGE', 'AREA_KM2', 'NAME', 'POP'),
 
   } else if (is.null(api_key)) {
 
-    stop('A Census API key is required.  Obtain one at https://api.census.gov/data/key_signup.html, and then supply the key to the `idb_api_key` function to use it throughout your idbr session.')
+    # Check if tidycensus API key is available
+
+    if (Sys.getenv("CENSUS_API_KEY" != '')) {
+      api_key <- Sys.getenv("CENSUS_API_KEY")
+    } else {
+      stop('A Census API key is required.  Obtain one at https://api.census.gov/data/key_signup.html, and then supply the key to the `idb_api_key` function to use it throughout your idbr session.')
+    }
 
   }
 
   if (length(country) > 1) {
 
-    stop('The option to supply multiple countries to a single `idb1` call is not yet supported.')
+    multi <- purrr::map_df(country, ~{
+      idb1(country = .x, year = year, variables = variables,
+           start_age = start_age, end_age = end_age, sex = sex,
+           api_key = api_key)
+    })
+
+    return(multi)
 
   }
 
@@ -207,7 +219,13 @@ idb5 <- function(country, year, variables = NULL, concept = NULL, country_name =
 
   } else if (is.null(api_key)) {
 
-    stop('A Census API key is required.  Obtain one at https://api.census.gov/data/key_signup.html, and then supply the key to the `idb_api_key` function to use it throughout your idbr session.')
+    # Check if tidycensus API key is available
+
+    if (Sys.getenv("CENSUS_API_KEY" != '')) {
+      api_key <- Sys.getenv("CENSUS_API_KEY")
+    } else {
+      stop('A Census API key is required.  Obtain one at https://api.census.gov/data/key_signup.html, and then supply the key to the `idb_api_key` function to use it throughout your idbr session.')
+    }
 
   }
 
@@ -217,7 +235,7 @@ idb5 <- function(country, year, variables = NULL, concept = NULL, country_name =
 
     } else {
 
-      country <- vapply(country, function(x) {
+      country <- purrr::map_chr(country, function(x) {
 
         if (nchar(x) > 2) {
 
@@ -229,7 +247,7 @@ idb5 <- function(country, year, variables = NULL, concept = NULL, country_name =
 
         }
 
-      }, character(1))
+      })
 
     })
 

@@ -15,4 +15,5 @@
 #' @import jsonlite
 #' @import dplyr
 #' @import countrycode
+#' @importFrom purrr map_df
 NULL

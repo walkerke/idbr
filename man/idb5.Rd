@@ -4,8 +4,14 @@
 \alias{idb5}
 \title{Retrieve data from the five-year-age-group IDB dataset.}
 \usage{
-idb5(country, year, variables = NULL, concept = NULL,
-  country_name = FALSE, api_key = NULL)
+idb5(
+  country,
+  year,
+  variables = NULL,
+  concept = NULL,
+  country_name = FALSE,
+  api_key = NULL
+)
 }
 \arguments{
 \item{country}{A two-character FIPS code or country name, or a vector of FIPS codes or country names,

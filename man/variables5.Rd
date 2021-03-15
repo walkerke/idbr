@@ -4,7 +4,9 @@
 \name{variables5}
 \alias{variables5}
 \title{Dataset with variable and concept descriptions for the IDB}
-\format{A data frame with 98 rows and 5 columns}
+\format{
+A data frame with 98 rows and 5 columns
+}
 \usage{
 data(variables5)
 }
