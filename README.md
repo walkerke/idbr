@@ -1,7 +1,11 @@
 # idbr
 An R interface to the US Census Bureau International Data Base API
 
-[![Travis-CI Build Status](https://travis-ci.org/walkerke/idbr.svg?branch=master)](https://travis-ci.org/walkerke/idbr)  ![](http://www.r-pkg.org/badges/version/idbr)  ![](http://cranlogs.r-pkg.org/badges/idbr)
+<!-- badges: start -->
+  [![R build status](https://github.com/walkerke/idbr/workflows/R-CMD-check/badge.svg)](https://github.com/walkerke/idbr/actions)![](http://www.r-pkg.org/badges/version/idbr)  ![](http://cranlogs.r-pkg.org/badges/idbr)
+  <!-- badges: end -->
+
+__Update: version 1.0 introduces a re-written and re-factored package API.  Functions from earlier versions of the package are deprecated and not recommended for use.__
 
 This R package enables users to fetch international demographic indicators from the US Census Bureau's International Data Base API and return R data frames.  Total population data are available from 1950-2050 (projected); age-group subsets and other demographic indicators are available for varying periods by country.  
 
@@ -20,7 +24,7 @@ install_github('walkerke/idbr')
 
 ## Basic usage: 
 
-To get started, load __idbr__ and set your Census API key with the `idb_api_key()` function.  An API key can be obtained from the US Census Bureau at <http://api.census.gov/data/key_signup.html>.
+To get started, load __idbr__ and set your Census API key with the `idb_api_key()` function.  An API key can be obtained from the US Census Bureau at <http://api.census.gov/data/key_signup.html>.  tidycensus users can use their existing API keys which idbr will pick up if already installed.
 
 ```r
 library(idbr)
@@ -28,67 +32,58 @@ library(idbr)
 idb_api_key('Your API key goes here')
 ```
 
-There are two main functions in the __idbr__ package: `idb1()` and `idb5()`.  `idb1()` grants access to the single-year-of-age dataset, which returns population counts by single-year age bands, subsetted optionally by sex and age range.  This dataset is well-suited for analyses and visualizations of the age composition of countries, such as population pyramids: 
+The core function used in idbr is `get_idb()`.  This function grants access to two core APIs.  The first is the single-year-of-age API, which returns population counts by single-year age bands, subsetted optionally by sex and age range.   This dataset is well-suited for analyses and visualizations of the age composition of countries, such as population pyramids: 
 
 ```r
-library(dplyr)
-library(ggplot2)
-library(ggthemes)
+library(idbr)
+library(tidyverse)
 
-# Supply the FIPS country code and year for which you'd like to request data, optionally by sex
-male <- idb1('China', 2016, sex = 'male') %>%
-  mutate(POP = POP * -1,
-         SEX = 'Male')
+china_data <- get_idb(
+  country = "China",
+  year = 2021,
+  age = 1:100,
+  sex = c("male", "female")
+) 
 
-female <- idb1('China', 2016, sex = 'female') %>%
-  mutate(SEX = 'Female')
+china_data %>%
+  mutate(pop = ifelse(sex == "Male", pop * -1, pop)) %>%
+  ggplot(aes(x = pop, y = as.factor(age), fill = sex)) + 
+  geom_col(width = 1) + 
+  theme_minimal(base_size = 15) + 
+  scale_x_continuous(labels = function(x) paste0(abs(x / 1000000), "m")) + 
+  scale_y_discrete(breaks = scales::pretty_breaks(n = 10)) + 
+  scale_fill_manual(values = c("red", "gold")) + 
+  labs(title = "Population structure of China in 2021",
+       x = "Population",
+       y = "Age",
+       fill = "")
 
-china <- rbind(male, female) 
-
-# Build the visualization
-
-ggplot(china, aes(x = AGE, y = POP, fill = SEX, width = 1)) +
-  coord_flip() +
-  annotate('text', x = 95, y = 6500000, 
-           label = 'Data source: US Census Bureau \nIDB via the idbr R package', 
-           size = 3.5, hjust = 0) + 
-  geom_bar(data = subset(china, SEX == "Female"), stat = "identity") +
-  geom_bar(data = subset(china, SEX == "Male"), stat = "identity") +
-  scale_y_continuous(breaks = seq(-10000000, 10000000, 5000000),
-                     labels = paste0(as.character(c(seq(10, 0, -5), c(5, 10))), "m")) +
-  theme_economist(base_size = 14) + 
-  scale_fill_economist() + 
-  ggtitle('Population structure of China, 2016') + 
-  ylab('Population') + 
-  xlab('Age') + 
-  theme(legend.position = "bottom", 
-        legend.title = element_blank()) + 
-  guides(fill = guide_legend(reverse = TRUE))
 
 ```
 
-<img src="http://personal.tcu.edu/kylewalker/img/china2.png" style = "width: 800px">
+<img src="https://walker-data.com/img/china_pyramid.png">
 
-The `idb5()` function grants access to the five-year-age-band dataset, which includes a wide range of fertility, mortality, and migration indicators along with overall population counts.  In turn, it can be used to inform analyses of how demographic indicators vary by country over time, among many other use cases.  
+`get_idb()` also grants access to the five-year-age-band dataset, which includes a wide range of fertility, mortality, and migration indicators along with overall population counts.  In turn, it can be used to inform analyses of how demographic indicators vary by country, among many other use cases. The argument `geometry = TRUE` can be used to return country boundaries as simple features along with your data which is helpful for mapping global and regional trends.  
 
 ```r
-# Fetch data for 'E0', which represents life expectancy at birth
-ssr_df <- idb5(c('Russia', 'Ukraine', 'Belarus'), 1989:2015, 
-              variables = 'E0', country_name = TRUE)
+library(idbr)
+library(tidyverse)
 
-ggplot(ssr_df, aes(x = time, y = E0, color = NAME)) + 
-  geom_line(size = 1) + 
-  theme_economist(base_size = 14) + 
-  scale_color_economist() + 
-  ylab('Life expectancy at birth') + 
-  xlab('Year') + 
-  theme(legend.title = element_blank(), 
-        legend.position = "bottom") + 
-  annotate('text', x = 2010, y = 64.5, 
-          label = 'Data source: US Census Bureau IDB \nvia the idbr R package', 
-          size = 3.5)
+lex <- get_idb(
+  country = "all",
+  year = 2021,
+  variables = c("name", "e0"),
+  geometry = TRUE
+)
+
+ggplot(lex, aes(fill = e0)) + 
+  theme_bw() + 
+  geom_sf() + 
+  coord_sf(crs = 'ESRI:54030') + 
+  scale_fill_viridis_c() + 
+  labs(fill = "Life expectancy \nat birth (2021)")
 ```
 
-<img src="http://personal.tcu.edu/kylewalker/img/ssr.png" style = "width: 800px">
+<img src="https://walker-data.com/img/lex_map.png">
 
 

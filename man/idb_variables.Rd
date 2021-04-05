@@ -2,7 +2,7 @@
 % Please edit documentation in R/reference.R
 \name{idb_variables}
 \alias{idb_variables}
-\title{Print the available variables to pass to the `idb5()` function.}
+\title{View the available variables for use in idbr}
 \usage{
 idb_variables()
 }

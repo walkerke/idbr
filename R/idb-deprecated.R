@@ -1,4 +1,4 @@
-#' Retrieve data from the single-year-of-age IDB dataset.
+#' (DEPRECATED) Retrieve data from the single-year-of-age IDB dataset.
 #'
 #' @param country The two-character country FIPS code, or a valid country name.
 #' @param year The year for which you'd like to retrieve data
@@ -42,6 +42,8 @@
 #' @export
 idb1 <- function(country, year, variables = c('AGE', 'AREA_KM2', 'NAME', 'POP'),
                  start_age = NULL, end_age = NULL, sex = NULL, api_key = NULL) {
+
+  .Deprecated("get_idb")
 
   if (Sys.getenv('IDB_API') != '') {
 
@@ -177,7 +179,7 @@ idb1 <- function(country, year, variables = c('AGE', 'AREA_KM2', 'NAME', 'POP'),
 
 }
 
-#' Retrieve data from the five-year-age-group IDB dataset.
+#' (DEPRECATED) Retrieve data from the five-year-age-group IDB dataset.
 #'
 #' @param country A two-character FIPS code or country name, or a vector of FIPS codes or country names,
 #' of the countries for which you'd like to retrieve data.
@@ -212,6 +214,8 @@ idb1 <- function(country, year, variables = c('AGE', 'AREA_KM2', 'NAME', 'POP'),
 #' }
 #' @export
 idb5 <- function(country, year, variables = NULL, concept = NULL, country_name = FALSE, api_key = NULL) {
+
+  .Deprecated("get_idb")
 
   if (Sys.getenv('IDB_API') != '') {
 

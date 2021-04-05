@@ -28,5 +28,7 @@ load_data <- function(api_call) {
 
   }
 
+
+
 }
 

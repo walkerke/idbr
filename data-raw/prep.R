@@ -2,7 +2,7 @@
 
 library(rvest)
 
-url <- 'http://api.census.gov/data/timeseries/idb/5year/variables.html'
+url <- 'https://api.census.gov/data/timeseries/idb/5year/variables.html'
 
 df <- url %>%
   html() %>%
