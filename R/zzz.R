@@ -21,3 +21,6 @@ valid_countries <- c("AA", "AC", "AE", "AF", "AG", "AJ", "AL", "AM", "AN", "AO",
                      "TO", "TP", "TS", "TT", "TU", "TV", "TW", "TX", "TZ", "UC", "UG",
                      "UK", "UP", "US", "UV", "UY", "UZ", "VC", "VE", "VI", "VM", "VQ",
                      "WA", "WE", "WF", "WI", "WS", "WZ", "YM", "ZA", "ZI")
+
+
+utils::globalVariables(c("Concept", "Name", "genc", "yr", "code", "iso_a2", "variables5"))
