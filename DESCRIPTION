@@ -20,5 +20,7 @@ Imports:
   dplyr,
   httr,
   countrycode, 
-  purrr
+  purrr,
+  rnaturalearthdata,
+  sf
 RoxygenNote: 7.1.1

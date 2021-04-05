@@ -16,5 +16,6 @@
 #' @import dplyr
 #' @import countrycode
 #' @import rnaturalearthdata
+#' @importFrom sf st_as_sf
 #' @importFrom purrr map_df
 NULL
