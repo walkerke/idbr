@@ -8,6 +8,7 @@ get_idb(
   country,
   year,
   variables = NULL,
+  concept = NULL,
   age = NULL,
   sex = NULL,
   geometry = FALSE,
@@ -16,25 +17,77 @@ get_idb(
 )
 }
 \arguments{
-\item{country}{A country name or vector of country names.}
+\item{country}{A country name or vector of country names. Can be specified as ISO-2 codes
+as well. Use \code{country = "all"} to request all countries available in
+the IDB.}
 
-\item{year}{A year, or vector of years}
+\item{year}{A single year or vector of years for which you'd like to request data.}
 
-\item{variables}{The variables you'd like to request.  If filtering by age or sex, should be NULL.}
+\item{variables}{A character string or vector of variables representing data you would like
+to request.  If you are specifying an age or sex subset, this should be kept as                     \code{NULL} as the function will return data from the 1-year-of-age IDB API.
+If filtering by age or sex, should be NULL.}
 
-\item{age}{A vector of ages}
+\item{concept}{Variables in the IDB are organized by concepts; if specified, request all
+variables for a given concept.  Use \code{idb_concepts()} to view
+available concepts.}
 
-\item{sex}{Either NULL (both sexes, the default), "male", or "female"}
+\item{age}{A vector of ages for which you would like to request population data. If specified,                 will return data from the 1-year-age-band IDB API.  Should not be used when
+\code{variables} is not \code{NULL}.}
 
-\item{geometry}{Not yet implemented}
+\item{sex}{One or more of "both", "male", or "female". If specified, will return data
+from the 1-year-age-band IDB API.  Should not be used when \code{variables}
+is not \code{NULL}.}
 
-\item{resolution}{"high" or "low"}
+\item{geometry}{If \code{TRUE}, returns country simple feature geometry along with your data
+which can be used for mapping. Geometry is obtained using the rnaturalearthdata
+R package.}
 
-\item{api_key}{Your key}
+\item{resolution}{one of \code{"low"} for lower-resolution (less-detailed) geometry, or          #'                   \code{"high"} for more detailed geometry.  It is recommended to use the low-
+resolution geometries for smaller-scale (e.g. world) mapping, and the
+higher-resolution geometries for medium-scale (e.g. regional) mapping.}
+
+\item{api_key}{Your Census API key.  Can be supplied as part of the function call or
+set globally with the \code{idb_api_key()} function. If you are a tidycensus
+user with your API key already stored, \code{get_idb()} will pick up the
+API key from there, and no further action from you is required.}
 }
 \value{
-Data from the IDB!
+A tibble or sf tibble of data from the International Data Base API.
 }
 \description{
 Get Data from the US Census Bureau's International Data Base API
+}
+\examples{
+\dontrun{
+# Get data from the 1-year-age-band dataset by sex for China from
+# 1990 through 2021
+
+library(idbr)
+
+china_data <- get_idb(
+  country = "China",
+  year = 1990:2021,
+  age = 1:100,
+  sex = c("male", "female")
+ )
+
+# Get data on life expectancy at birth for all countries in 2021 and
+# make a map with ggplot2
+
+library(idbr)
+library(tidyverse)
+
+lex <- get_idb(
+  country = "all",
+  year = 2021,
+  variables = c("name", "e0"),
+  geometry = TRUE
+)
+ggplot(lex, aes(fill = e0)) +
+  theme_bw() +
+  geom_sf() +
+  coord_sf(crs = 'ESRI:54030') +
+  scale_fill_viridis_c() +
+  labs(fill = "Life expectancy at birth (2021)")
+}
 }

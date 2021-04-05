@@ -1,19 +1,71 @@
 #' Get Data from the US Census Bureau's International Data Base API
 #'
-#' @param country A country name or vector of country names.
-#' @param year A year, or vector of years
-#' @param variables The variables you'd like to request.  If filtering by age or sex, should be NULL.
-#' @param age A vector of ages
-#' @param sex Either NULL (both sexes, the default), "male", or "female"
-#' @param geometry Not yet implemented
-#' @param resolution "high" or "low"
-#' @param api_key Your key
+#' @param country A country name or vector of country names. Can be specified as ISO-2 codes
+#'                as well. Use \code{country = "all"} to request all countries available in
+#'                the IDB.
+#' @param year A single year or vector of years for which you'd like to request data.
+#' @param variables A character string or vector of variables representing data you would like
+#'                  to request.  If you are specifying an age or sex subset, this should be kept as                     \code{NULL} as the function will return data from the 1-year-of-age IDB API.
+#'                  If filtering by age or sex, should be NULL.
+#' @param concept Variables in the IDB are organized by concepts; if specified, request all
+#'                variables for a given concept.  Use \code{idb_concepts()} to view
+#'                available concepts.
+#' @param age A vector of ages for which you would like to request population data. If specified,                 will return data from the 1-year-age-band IDB API.  Should not be used when
+#'            \code{variables} is not \code{NULL}.
+#' @param sex One or more of "both", "male", or "female". If specified, will return data
+#'            from the 1-year-age-band IDB API.  Should not be used when \code{variables}
+#'            is not \code{NULL}.
+#' @param geometry If \code{TRUE}, returns country simple feature geometry along with your data
+#'                 which can be used for mapping. Geometry is obtained using the rnaturalearthdata
+#'                 R package.
+#' @param resolution one of \code{"low"} for lower-resolution (less-detailed) geometry, or          #'                   \code{"high"} for more detailed geometry.  It is recommended to use the low-
+#'                   resolution geometries for smaller-scale (e.g. world) mapping, and the
+#'                   higher-resolution geometries for medium-scale (e.g. regional) mapping.
+#' @param api_key Your Census API key.  Can be supplied as part of the function call or
+#'                set globally with the \code{idb_api_key()} function. If you are a tidycensus
+#'                user with your API key already stored, \code{get_idb()} will pick up the
+#'                API key from there, and no further action from you is required.
 #'
-#' @return Data from the IDB!
+#' @return A tibble or sf tibble of data from the International Data Base API.
 #' @export
+#'
+#' @examples \dontrun{
+#' # Get data from the 1-year-age-band dataset by sex for China from
+#' # 1990 through 2021
+#'
+#' library(idbr)
+#'
+#' china_data <- get_idb(
+#'   country = "China",
+#'   year = 1990:2021,
+#'   age = 1:100,
+#'   sex = c("male", "female")
+#'  )
+#'
+#' # Get data on life expectancy at birth for all countries in 2021 and
+#' # make a map with ggplot2
+#'
+#' library(idbr)
+#' library(tidyverse)
+#'
+#' lex <- get_idb(
+#'   country = "all",
+#'   year = 2021,
+#'   variables = c("name", "e0"),
+#'   geometry = TRUE
+#' )
+#
+#' ggplot(lex, aes(fill = e0)) +
+#'   theme_bw() +
+#'   geom_sf() +
+#'   coord_sf(crs = 'ESRI:54030') +
+#'   scale_fill_viridis_c() +
+#'   labs(fill = "Life expectancy at birth (2021)")
+#' }
 get_idb <- function(country,
                     year,
                     variables = NULL,
+                    concept = NULL,
                     age = NULL,
                     sex = NULL,
                     geometry = FALSE,
@@ -42,11 +94,17 @@ get_idb <- function(country,
     base_url <- "https://api.census.gov/data/timeseries/idb/5year"
   }
 
+  if (!is.null(concept)) {
+    variables <- idbr::variables5 %>%
+      dplyr::filter(Concept == concept) %>%
+      dplyr::pull(Name)
+  }
+
   if (!is.null(age) || !is.null(sex)) {
     if (is.null(variables)) {
       variables <- "NAME,POP"
     } else {
-      stop("`variables` cannot be used with age or sex subsets, which query the 1-year-of-age population API.  Specify a vector of variables and leave `AGE` and `SEX` as `NULL` to complete your request.", call. = FALSE)
+      stop("`variables` or `concept` cannot be used with age or sex subsets, which query the 1-year-of-age population API.  Specify a vector of variables and leave `AGE` and `SEX` as `NULL` to complete your request.", call. = FALSE)
     }
   }
 
@@ -71,12 +129,15 @@ get_idb <- function(country,
 
   if (!is.null(sex)) {
 
-    if (sex == 'both') sex <- 0
+    sex_ints <- purrr::map_chr(sex, ~{
+      if (.x == "both") return(0L)
+      if (.x == "male") return(1L)
+      if (.x == "female") return(2L)
+    }) %>%
+      paste0(collapse = ",")
 
-    if (sex == 'male') sex <- 1
-
-    if (sex == 'female') sex <- 2
-
+  } else {
+    sex_ints <- NULL
   }
 
   # Format age and year, if appropriate
@@ -100,7 +161,7 @@ get_idb <- function(country,
   api_request <- httr::GET(base_url,
                            query = list(
                              get = variables,
-                             SEX = sex,
+                             SEX = sex_ints,
                              YR = year,
                              AGE = age,
                              GENC = country_to_use,
@@ -132,6 +193,14 @@ get_idb <- function(country,
 
   out_tibble <- dplyr::select(req_tibble, code = genc, year = yr, dplyr::everything())
 
+  if ("sex" %in% names(out_tibble)) {
+    out_tibble$sex <- dplyr::recode(out_tibble$sex,
+      `0` = "Both",
+      `1` = "Male",
+      `2` = "Female"
+    )
+  }
+
   if (!is.null(country_vector)) {
     out_tibble <- out_tibble %>%
       dplyr::filter(code %in% country_vector)
@@ -150,15 +219,23 @@ get_idb <- function(country,
         dplyr::select(code = iso_a2)
     }
 
-    joined_tbl <- geom %>%
-      dplyr::inner_join(out_tibble, by = "code")
+    # Should be left join if country is all, to make missing countries NULL
+    # Not perfect yet, e.g. for regional mapping with missing countries
+    if (all(country == "all")) {
+
+      joined_tbl <- geom %>%
+        dplyr::left_join(out_tibble, by = "code")
+
+    } else {
+
+      joined_tbl <- geom %>%
+        dplyr::inner_join(out_tibble, by = "code")
+
+    }
 
     return(joined_tbl)
   } else {
     return(out_tibble)
   }
-
-
-
 
 }

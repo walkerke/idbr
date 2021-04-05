@@ -15,7 +15,6 @@
 #' @import jsonlite
 #' @import dplyr
 #' @import countrycode
-#' @import rnaturalearth
 #' @import rnaturalearthdata
 #' @importFrom purrr map_df
 NULL
