@@ -123,8 +123,13 @@ get_idb <- function(country,
     }
   }
 
+  # Account for when age/sex are specified but the other is not
   if (is.null(sex) && !is.null(age)) {
     sex <- "both"
+  }
+
+  if (!is.null(sex) && is.null(age)) {
+    age <- 0:100
   }
 
   if (!is.null(sex)) {
