@@ -102,7 +102,7 @@ get_idb <- function(country,
 
   if (!is.null(age) || !is.null(sex)) {
     if (is.null(variables)) {
-      variables <- "NAME,POP"
+      variables <- "POP"
     } else {
       stop("`variables` or `concept` cannot be used with age or sex subsets, which query the 1-year-of-age population API.  Specify a vector of variables and leave `AGE` and `SEX` as `NULL` to complete your request.", call. = FALSE)
     }
@@ -152,6 +152,13 @@ get_idb <- function(country,
 
   year <- paste0(year, collapse = ",")
 
+  variables <- toupper(variables)
+
+  # Grab NAME by default if not already requested
+  if (!"NAME" %in% variables) {
+    variables <- c("NAME", variables)
+  }
+
   if (length(variables) > 1) {
     variables <- paste0(variables, collapse = ",")
   }
@@ -159,8 +166,6 @@ get_idb <- function(country,
   if (is.null(country_to_use)) {
     variables <- paste0("GENC,", variables)
   }
-
-  variables <- toupper(variables)
 
   # Formulate the query
   api_request <- httr::GET(base_url,

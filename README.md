@@ -9,7 +9,7 @@ An R interface to the US Census Bureau International Data Base API
 
 __Update: version 1.0 introduces a re-written and re-factored package API.  Functions from earlier versions of the package are deprecated and not recommended for use.__
 
-This R package enables users to fetch international demographic indicators from the US Census Bureau's International Data Base API and return R data frames.  Total population data are available from 1950-2050 (projected); age-group subsets and other demographic indicators are available for varying periods by country.  
+This R package enables users to fetch international demographic indicators from the US Census Bureau's International Data Base API and return R data frames.  Total population data are available from 1950-2100 (projected); age-group subsets and other demographic indicators are available for varying periods by country.  
 
 Install from CRAN with: 
 
