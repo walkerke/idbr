@@ -1,6 +1,8 @@
 # idbr
 An R interface to the US Census Bureau International Data Base API
 
+<img src=tools/readme/idbr_sticker.png width="250">
+
 <!-- badges: start -->
   [![R build status](https://github.com/walkerke/idbr/workflows/R-CMD-check/badge.svg)](https://github.com/walkerke/idbr/actions)![](http://www.r-pkg.org/badges/version/idbr)  ![](http://cranlogs.r-pkg.org/badges/idbr)
   <!-- badges: end -->
