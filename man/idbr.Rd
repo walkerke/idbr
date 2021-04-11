@@ -11,9 +11,9 @@ This R package grants users access to the US Census Bureau's International Data 
 This product uses the Census Bureau Data API but is not endorsed or certified by the Census Bureau.
 }
 \seealso{
-Census API terms of service: \url{http://www.census.gov/data/developers/about/terms-of-service.html}
+Census API terms of service: \url{https://www.census.gov/data/developers/about/terms-of-service.html}
 
-US Census Bureau IDB API home page: \url{http://www.census.gov/data/developers/data-sets/international-database.html}
+US Census Bureau IDB API home page: \url{https://www.census.gov/data/developers/data-sets/international-database.html}
 }
 \author{
 Kyle Walker
