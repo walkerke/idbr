@@ -43,7 +43,7 @@ library(tidyverse)
 china_data <- get_idb(
   country = "China",
   year = 2021,
-  age = 1:100,
+  age = 0:100,
   sex = c("male", "female")
 ) 
 
