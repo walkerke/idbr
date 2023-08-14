@@ -135,9 +135,9 @@ get_idb <- function(country,
   if (!is.null(sex)) {
 
     sex_ints <- purrr::map_chr(sex, ~{
-      if (.x == "both") return(0L)
-      if (.x == "male") return(1L)
-      if (.x == "female") return(2L)
+      if (.x == "both") return("0")
+      if (.x == "male") return("1")
+      if (.x == "female") return("2")
     }) %>%
       paste0(collapse = ",")
 
@@ -164,7 +164,9 @@ get_idb <- function(country,
   }
 
   if (is.null(country_to_use)) {
-    variables <- paste0("GENC,", variables)
+    variables <- paste0("GEO_ID,", variables)
+  } else {
+    country_to_use <- paste0("W140000WO", country_to_use)
   }
 
   # Formulate the query
@@ -174,7 +176,7 @@ get_idb <- function(country,
                              SEX = sex_ints,
                              YR = year,
                              AGE = age,
-                             GENC = country_to_use,
+                             GEO_ID = country_to_use,
                              key = api_key
                            ))
 
@@ -193,7 +195,7 @@ get_idb <- function(country,
 
   rownames(req_frame) <- NULL
 
-  string_cols <- names(req_frame) %in% c("NAME", "GENC")
+  string_cols <- names(req_frame) %in% c("NAME", "GEO_ID")
 
   req_frame[!string_cols] <- apply(req_frame[!string_cols], 2, function(x) as.numeric(x))
 
@@ -201,7 +203,9 @@ get_idb <- function(country,
 
   names(req_tibble) <- tolower(names(req_tibble))
 
-  out_tibble <- dplyr::select(req_tibble, code = genc, year = yr, dplyr::everything())
+  req_tibble$geo_id <- stringr::str_sub(req_tibble$geo_id, start = -2)
+
+  out_tibble <- dplyr::select(req_tibble, code = geo_id, year = yr, dplyr::everything())
 
   if ("sex" %in% names(out_tibble)) {
     out_tibble$sex <- dplyr::recode(out_tibble$sex,

@@ -18,4 +18,5 @@
 #' @import rnaturalearthdata
 #' @importFrom sf st_as_sf
 #' @importFrom purrr map_df
+#' @importFrom stringr str_sub
 NULL
