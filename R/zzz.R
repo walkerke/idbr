@@ -23,4 +23,4 @@ valid_countries <- c("AA", "AC", "AE", "AF", "AG", "AJ", "AL", "AM", "AN", "AO",
                      "WA", "WE", "WF", "WI", "WS", "WZ", "YM", "ZA", "ZI")
 
 
-utils::globalVariables(c("Concept", "Name", "genc", "yr", "code", "iso_a2", "variables5"))
+utils::globalVariables(c("Concept", "Name", "genc", "yr", "code", "iso_a2", "variables5", "geo_id"))
