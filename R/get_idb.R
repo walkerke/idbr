@@ -226,11 +226,11 @@ get_idb <- function(country,
     if (resolution == "low") {
       geom <- rnaturalearthdata::countries110 %>%
         sf::st_as_sf() %>%
-        dplyr::select(code = iso_a2)
+        dplyr::select(code = iso_a2_eh)
     } else {
       geom <- rnaturalearthdata::countries50 %>%
         sf::st_as_sf() %>%
-        dplyr::select(code = iso_a2)
+        dplyr::select(code = iso_a2_eh)
     }
 
     # Should be left join if country is all, to make missing countries NULL
